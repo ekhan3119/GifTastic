@@ -24,6 +24,8 @@ var topics = ['Sesame Street', 'Paw Patrol', 'Peppa Pig', "Daniel Tiger's", 'Ste
  }); 
  console.log(show);
 }
+//created function to get the response  from the giphy api 
+// created nested function to display the gif images and in still mode
   function displayImages(response){
     response.data.forEach(function(image){
       var imageDiv =$("<div class='images'>");
@@ -32,6 +34,11 @@ var topics = ['Sesame Street', 'Paw Patrol', 'Peppa Pig', "Daniel Tiger's", 'Ste
       .attr("data-animate",image.images.fixed_height_small.url);
       imageDiv.append(imageTag);
     $("#shows-Gif-appears-here").append(imageDiv);
+    
+    var rating = response.rated;
+
+    var pRating = $("<p>").text("Rating: " + rating);
+    imageDiv.append(pRating);
 
     })
   }
@@ -74,9 +81,21 @@ function renderButton() {
     renderButton();
   });
 
+/* 
+  $("#add-shows").on("click", function() {
+    var results = response.data;
+    for (var i = 0; i < results.length; i++) {}
+    var gifDiv = $("<div>");
+    var p = $("<p>").text("Rating: " + results[i].rating);
+
+
+  } */
+
+
   // calling renderButton outside of the functions beacuse it will render all the show names from the topics array when the page loads.
   //$(body).on("click", ".topic", displayShowNames);
 
   renderButton();
+  //calling the function to 
   $(document).on("click", ".kids-show", displayShowInfo);
 
