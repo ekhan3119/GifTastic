@@ -7,8 +7,9 @@ var topics = ['Sesame Street', 'Paw Patrol', 'Peppa Pig', "Daniel Tiger's", 'Ste
 
 //create a function to get gif using JSON for each button 
  function displayShowInfo() {
+   //console.log($(this));
   var show = $(this).attr("data-name");
-  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + show + "&api_key=v5KqH1M87Ogbof59AWvNl4ZhtS6DHFVl&limit=10&limit=10";
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + show + "&api_key=v5KqH1M87Ogbof59AWvNl4ZhtS6DHFVl&limit=10&limit=10&rating=g";
 
   //console.log(queryURL);
   $("#shows-Gif-appears-here").empty();
@@ -31,11 +32,12 @@ var topics = ['Sesame Street', 'Paw Patrol', 'Peppa Pig', "Daniel Tiger's", 'Ste
       var imageDiv =$("<div class='images'>");
       var imageTag =$("<img>").attr("data-state", "still")
       .attr("src",image.images.fixed_height_still.url)
-      .attr("data-animate",image.images.fixed_height_small.url);
+      .attr("data-animate",image.images.fixed_height_small.url)
+      .attr("data-still",image.images.fixed_height_still.url);
       imageDiv.append(imageTag);
     $("#shows-Gif-appears-here").append(imageDiv);
     
-    var rating = response.rated;
+    var rating = image.rating;
 
     var pRating = $("<p>").text("Rating: " + rating);
     imageDiv.append(pRating);
