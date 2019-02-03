@@ -6,44 +6,57 @@ var topics = ['Sesame Street', 'Paw Patrol', 'Peppa Pig', "Daniel Tiger's", 'Ste
 //console.log(topics);
 
 //create a function to get gif using JSON for each button 
- function displayShowInfo() {
-   //console.log($(this));
+function displayShowInfo() {
+  //console.log($(this));
   var show = $(this).attr("data-name");
-  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + show + "&api_key=v5KqH1M87Ogbof59AWvNl4ZhtS6DHFVl&limit=10&limit=10&rating=g";
+  var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + show + "&api_key=v5KqH1M87Ogbof59AWvNl4ZhtS6DHFVl&limit=10&rating=g";
 
   //console.log(queryURL);
   $("#shows-Gif-appears-here").empty();
-   $.ajax({
+  $.ajax({
     url: queryURL,
     method: "GET"
-  }).then(function(response) {
+  }).then(function (response) {
     displayImages(response);
     console.log(queryURL);
     console.log(response);
-  
 
- }); 
- console.log(show);
+
+  });
+  console.log(show);
 }
 //created function to get the response  from the giphy api 
 // created nested function to display the gif images and in still mode
-  function displayImages(response){
-    response.data.forEach(function(image){
-      var imageDiv =$("<div class='images'>");
-      var imageTag =$("<img>").attr("data-state", "still")
-      .attr("src",image.images.fixed_height_still.url)
-      .attr("data-animate",image.images.fixed_height_small.url)
-      .attr("data-still",image.images.fixed_height_still.url);
-      imageDiv.append(imageTag);
+function displayImages(response) {
+  response.data.forEach(function (image) {
+    var imageDiv = $("<div class='images'>");
+    var imageTag = $("<img>")
+      .attr("data-state", "still")
+      .attr("src", image.images.fixed_height_still.url)
+      .attr("data-animate", image.images.fixed_height.url)
+      .attr("data-still", image.images.fixed_height_still.url);
+    imageDiv.append(imageTag);
     $("#shows-Gif-appears-here").append(imageDiv);
-    
+
     var rating = image.rating;
 
     var pRating = $("<p>").text("Rating: " + rating);
     imageDiv.append(pRating);
 
-    })
+  })
+}
+$(document).on("click", "img", function (event) {
+  event.preventDefault();
+  let state = $(this).attr("data-state");
+  if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
   }
+  else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+  }
+});
 //create a function to add a button with show names
 function renderButton() {
 
@@ -69,35 +82,23 @@ function renderButton() {
   }
 }
 //trigger this function when submit button is clicked
-  $('#add-shows').on("click", function(event) {
-    event.preventDefault();
+$('#add-shows').on("click", function (event) {
+  event.preventDefault();
 
-    //create a var to capture user input text
-    var topic = $("#show-input").val().trim();
+  //create a var to capture user input text
+  var topic = $("#show-input").val().trim();
 
-    //add a temporary new button to the page with User input using .push method
-    topics.push(topic);
-
-    
-    //calling the renderButton function inside click function so it can append the new button on the page
-    renderButton();
-  });
-
-/* 
-  $("#add-shows").on("click", function() {
-    var results = response.data;
-    for (var i = 0; i < results.length; i++) {}
-    var gifDiv = $("<div>");
-    var p = $("<p>").text("Rating: " + results[i].rating);
+  //add a temporary new button to the page with User input using .push method
+  topics.push(topic);
 
 
-  } */
-
-
-  // calling renderButton outside of the functions beacuse it will render all the show names from the topics array when the page loads.
-  //$(body).on("click", ".topic", displayShowNames);
-
+  //calling the renderButton function inside click function so it can append the new button on the page
   renderButton();
-  //calling the function to 
-  $(document).on("click", ".kids-show", displayShowInfo);
+});
+
+
+
+renderButton();
+//calling the function to 
+$(document).on("click", ".kids-show", displayShowInfo);
 
